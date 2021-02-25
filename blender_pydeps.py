@@ -144,13 +144,21 @@ class PythonRequirements():
         for r in self._requirements:
             if r.import_checker:
                 try:
-                    r.import_checker(r.parsed_package_spec().name)
+                    requirement_ok = r.import_checker(r.parsed_package_spec().name)
                 except Exception as e:
-                    missing_requirements.add(r)
+                    requirement_ok = False
                     print(
                         f"Import check for package {r} "
                         f"raised the following error:\n{e}"
                     )
+                else:
+                    if not requirement_ok:
+                        print(
+                            f"Import check for package {r} "
+                            f"returned False"
+                        )
+                if not requirement_ok:
+                    missing_requirements.add(r)
             else:
                 requirements_to_check_by_pip.add(r)
 
@@ -206,7 +214,7 @@ class PythonRequirements():
                     print(f"Did not find any installed {package_spec.name}")
                     missing_requirements.add(requirement)
 
-        if len(missing_requirements) == 0:
+        if not missing_requirements:
             self.__class__._requirements_are_ok = True
         return missing_requirements
 
