@@ -107,7 +107,6 @@ class PythonRequirements():
         if self._pip_is_set_up:
             print("Pip already set up")
             return
-        print("Bootstrapping pip...")
         try:
             # Check if pip is already installed
             subprocess.run(
@@ -122,6 +121,7 @@ class PythonRequirements():
         except subprocess.CalledProcessError:
             # Conceivably we might not have either pip or ensurepip, but let's
             # assume we do as otherwise it's game over.
+            print("Bootstrapping pip...")
             import ensurepip
             ensurepip.bootstrap()
             os.environ.pop("PIP_REQ_TRACKER", None)
