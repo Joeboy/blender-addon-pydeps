@@ -60,9 +60,6 @@ finally:
     os.environ.update(_environ)
 ```
 
-TODO
-====
-* Check robustness of regex against weird packages / version nos.
 
 Credit
 ======

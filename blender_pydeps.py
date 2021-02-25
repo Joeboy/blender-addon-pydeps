@@ -46,9 +46,8 @@ class Requirement():
         try:
             return self.__class__._package_spec_regex
         except AttributeError:
-            # TODO: Make sure regex is robust in the face of weird package names / versions
             r = re.compile(
-                r'^(?P<name>[\w-]+)(?:(?P<comparator>(?:<)|(?:>)|(?:<=)|(?:>=)|(?:==))(?P<version_string>[\w.-]+))?$'
+                r'^(?P<name>[\w.-]+)(?:(?P<comparator>(?:<)|(?:>)|(?:<=)|(?:>=)|(?:==))(?P<version_string>[\w.-]+))?$'
             )
             self.__class__._package_spec_regex = r
             return r
