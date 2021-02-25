@@ -223,6 +223,7 @@ class PythonRequirements():
                         '-m',
                         'pip',
                         'install',
+                        '--prefer-binary',
                         requirement.package_spec
                     ],
                     capture_output=True

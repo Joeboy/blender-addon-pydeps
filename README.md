@@ -25,9 +25,9 @@ python_requirements.install_missing_requirements()
 You can specify your requirements in various different ways, as illustrated above. When the code checks each one, it will behave in slightly different ways.
 
 * The code will check whether `firstpackage` is installed by seeing if it shows up in the output of `pip list`. When it installs it, it'll install any available version as no specific version is requested.
-* Again, `secondpackage` will be checked using `pip list`, but the version will also be checked, and if the package needs to be installed the requested version will be passed to `pip install`.
-* `third_package` will be checked using the `__import__` function, to which the package name will be passed. If the package name can be imported, the package is considered to be installed. This avoids the overhead of `pip list` (if you do it for all the packages).
-* Some packages, like `fourth-package`, don't have modules that are named the same as the package (in this case the package name would be invalid). So we've provided a callable which will import the correct module name. If you like, you can pass a more involved function that checks the version etc.
+* `secondpackage` will also be checked using `pip list`, but the version will also be checked, and if the package needs to be installed or upgraded the requested version will be passed to `pip install`.
+* `third_package` will be checked using the `__import__` function, to which the package name will be passed. If the package name can be imported, the package is considered to be installed. This avoids the overhead of `pip list` (if you do it for all your requirements).
+* Some packages, like `fourth-package`, don't have modules that are named the same as the package (in this case the '-' would make the module name invalid). So we've provided a callable which will import the correct module name. If you like, you can pass a more involved function that checks the version etc.
 
 
 Status
@@ -39,7 +39,7 @@ Not very well tested, it works on my (Ubuntu) machine. I will not be at all surp
 Issues and Limitations
 ======================
 
-Some packages require a development environment, dev headers etc. These packages are unlikely to install on most end-users' machines. Specifying the `wheel` package at the start of your requirements list makes it more likely you'll find a binary distribution that'll probably work more easily.
+Some packages require a development environment, dev headers etc. These packages are unlikely to install on most end-users' machines. The code passes the "--prefer-binary" switch to pip when installing, so if there's a choice between an older binary and a newer source-based package, it'll prefer the former.
 
 If you *do* have a development environment and you want to install packages from source on your machine, you could try something like the following:
 
@@ -59,8 +59,8 @@ finally:
 
 TODO
 ====
-* Currently no installation output is displayed, either in Blender or the console, so it seems like nothing is happening until the installation completes (or fails). Would be good to do something about that, as some packages take a *long* time to install
-* Test with more blender versions
+* Currently no installation output is displayed, either in Blender or the console, so it seems like nothing is happening until the installation completes (or fails). Would be good to do something about that, as some packages take a *long* time to install.
+* Test with more blender versions and OSes (currently completely untested on Windows / OSX).
 * Check robustness of regex against weird packages / version nos.
 
 Credit
