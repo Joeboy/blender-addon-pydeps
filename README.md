@@ -62,7 +62,6 @@ finally:
 
 TODO
 ====
-* Currently no installation output is displayed, either in Blender or the console, so it seems like nothing is happening until the installation completes (or fails). Would be good to do something about that, as some packages take a *long* time to install.
 * Test with more blender versions and OSes (currently completely untested on Windows / OSX).
 * Check robustness of regex against weird packages / version nos.
 
