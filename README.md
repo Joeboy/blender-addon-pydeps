@@ -14,7 +14,7 @@ python_requirements = PythonRequirements([
     'firstpackage',
     'secondpackage>=3.2.1',
     ('third_package', __import__),
-    ('fourth-package', lambda module_name: __import__('fourth_package)),
+    ('fourth-package', lambda _: __import__('fourth_package)),
 ])
 
 if python_requirements.requirements_installed:
@@ -27,8 +27,8 @@ You can specify your requirements in various different ways, as illustrated abov
 
 * The code will check whether `firstpackage` is installed by seeing if it shows up in the output of `pip list`. When it installs it, it'll install any available version as no specific version is requested. If you just want to get the package installed by all means necessary, you can use this lazy option.
 * `secondpackage` will also be checked using `pip list`, but the version will also be checked, and if the package needs to be installed or upgraded the requested version will be passed to `pip install`.
-* `third_package` will be checked using the `__import__` function, to which the package name will be passed. If the package name can be imported, the package is considered to be installed. This avoids the overhead of `pip list` (if you do it for all your requirements).
-* Some packages, like `fourth-package`, don't have modules that are named the same as the package (in this case the '-' would make the module name invalid). So we've provided a callable which will import the correct module name. If you like, you can pass a more involved function that checks the version etc.
+* `third_package` will be checked using the `__import__` function, to which the package name will be passed. If the package name can be imported, the package is considered to be installed. If you do this for all your requirements, the slightly slow and skanky `pip list` stage will be skipped.
+* Some packages, like `fourth-package`, don't have modules that are named the same as the package (in this case the `-` would make the module name invalid). So we've provided a callable which will try to import the correct module name. If you like, you can pass a more involved function that checks the version etc.
 
 Incidentlally, nothing in `blender_pydeps.py` is actually tied to Blender, so in theory there might be other uses for the same code.
 
@@ -36,13 +36,13 @@ Incidentlally, nothing in `blender_pydeps.py` is actually tied to Blender, so in
 Status
 ======
 
-Not very well tested, it works on my Ubuntu 20.10 machine. I will not be at all surprised if there are bugs. Feel free to report issues.
+Not very well tested. It seems to work on my Ubuntu 20.10 machine, and on Windows 10 (running Blender as administrator). I suspect it might work on macOS but I hvan't tried it. Feel free to report issues.
 
 
 Issues and Limitations
 ======================
 
-Some packages require a development environment, dev headers etc. These packages are unlikely to install on most end-users' machines. The code passes the `--prefer-binary` switch to pip when installing, so if there's a choice between an older binary and a newer source-based package, it'll prefer the former.
+Some packages require a development environment, C headers etc. These packages are unlikely to install on most end-users' machines. The code passes the `--prefer-binary` switch to pip when installing, so if there's a choice between an older binary and a newer source-based package, it'll favour the former.
 
 If you *do* have a development environment and you want to install packages from source on your machine, you could try something like the following:
 
@@ -62,7 +62,6 @@ finally:
 
 TODO
 ====
-* Test with more blender versions and OSes (currently completely untested on Windows / OSX).
 * Check robustness of regex against weird packages / version nos.
 
 Credit
