@@ -16,7 +16,6 @@ bl_info = {
 
 python_requirements = PythonRequirements(
     [
-        ('wheel', __import__),
         ('pyyaml', lambda n: __import__('yaml')),
         ('random-word', lambda n: __import__('random_word')),
     ]
